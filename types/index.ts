@@ -28,7 +28,7 @@ export interface TopPodcastersProps {
 export interface PodcastProps {
   _id: Id<"podcasts">;
   _creationTime: number;
-  audioStorageId: Id<"_storage"> | null;
+  audioStorageId?: Id<"_storage"> | null;
   user: Id<"users">;
   podcastTitle: string;
   podcastDescription: string;

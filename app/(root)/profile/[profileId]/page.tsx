@@ -24,6 +24,19 @@ const ProfilePage = ({
 
   if (!user || !podcastsData) return <LoaderSpinner />;
 
+  const normalizedPodcastsData = podcastsData
+    ? {
+        ...podcastsData,
+        podcasts: podcastsData.podcasts.map((podcast) => ({
+          ...podcast,
+          audioUrl: podcast.audioUrl ?? null,
+          imageUrl: podcast.imageUrl ?? null,
+          audioStorageId: podcast.audioStorageId ?? null,
+          imageStorageId: podcast.imageStorageId ?? null,
+        })),
+      }
+    : null;
+
   return (
     <section className="mt-9 flex flex-col">
       <h1 className="text-20 font-bold text-white-1 max-md:text-center">
@@ -31,7 +44,7 @@ const ProfilePage = ({
       </h1>
       <div className="mt-6 flex flex-col gap-6 max-md:items-center md:flex-row">
         <ProfileCard
-          podcastData={podcastsData!}
+          podcastData={normalizedPodcastsData!}
           imageUrl={user?.imageUrl!}
           userFirstName={user?.name!}
         />
