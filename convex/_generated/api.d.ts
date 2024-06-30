@@ -17,8 +17,10 @@ import type {
 import type * as files from "../files.js";
 import type * as http from "../http.js";
 import type * as openai from "../openai.js";
-import type * as podcasts from "../podcasts.js";
-import type * as tasks from "../tasks.js";
+import type * as payments from "../payments.js";
+import type * as plans from "../plans.js";
+import type * as stripe from "../stripe.js";
+import type * as tts from "../tts.js";
 import type * as users from "../users.js";
 
 /**
@@ -33,8 +35,10 @@ declare const fullApi: ApiFromModules<{
   files: typeof files;
   http: typeof http;
   openai: typeof openai;
-  podcasts: typeof podcasts;
-  tasks: typeof tasks;
+  payments: typeof payments;
+  plans: typeof plans;
+  stripe: typeof stripe;
+  tts: typeof tts;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

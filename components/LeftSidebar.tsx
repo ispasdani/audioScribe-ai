@@ -6,9 +6,16 @@ import React from "react";
 import { sidebarLinks } from "@/constants";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { SignedIn, SignedOut, useClerk, useUser } from "@clerk/nextjs";
+import {
+  SignedIn,
+  SignedOut,
+  UserButton,
+  useClerk,
+  useUser,
+} from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import { useAudio } from "@/app/providers/AudioProvider";
+import GradientButton from "./GradientButton";
 
 const LeftSidebar = () => {
   const pathname = usePathname();
@@ -19,16 +26,23 @@ const LeftSidebar = () => {
 
   return (
     <section
-      className={cn("left_sidebar h-[calc(100vh-5px)]", {
-        "h-[calc(100vh-116px)]": audio?.audioUrl,
-      })}
+      // className={cn("left_sidebar h-[calc(100vh-5px)]", {
+      //   "h-[calc(100vh-116px)]": audio?.audioUrl,
+      // })}
+      className="left_sidebar"
     >
       <nav className="flex flex-col gap-6">
         <Link
           href={"/"}
-          className="flex cursor-pointer items-center gap-1 pb-10 max-lg:justify-center"
+          className="flex cursor-pointer items-center gap-1 pb-10 justify-center"
         >
-          <Image src={"/icons/logo.svg"} alt={"logo"} width={23} height={27} />
+          <Image
+            src={"/icons/logo.svg"}
+            alt={"logo"}
+            width={30}
+            height={30}
+            className="mr-2"
+          />
           <h1 className="text-24 font-extrabold text-white mag-lg:hidden">
             AudioScribe AI
           </h1>
@@ -46,8 +60,8 @@ const LeftSidebar = () => {
               prefetch={false}
               key={link.label}
               className={cn(
-                "flex ga-3 items-center py-4 max-lg:px-4 justify-center lg:justify-start",
-                { "bg-nav-focus border-r-4 border-orange-1": isActive }
+                "flex ga-3 items-center py-4 px-4 justify-center lg:justify-start",
+                { "bg-nav-focus border-r-4 border-blue-800": isActive }
               )}
             >
               <Image
@@ -55,6 +69,7 @@ const LeftSidebar = () => {
                 alt={link.label}
                 width={24}
                 height={24}
+                className="mr-2"
               />
               <p>{link.label}</p>
             </Link>
@@ -62,24 +77,45 @@ const LeftSidebar = () => {
         })}
       </nav>
 
-      <SignedOut>
-        <div className="flex-center w-full pb-14 max-lg:px-4 lg:pr-8">
-          <Button className="text-16 w-full bg-orange-1 font-extrabold">
-            <Link href={"/sign-in"}>Sign In</Link>
-          </Button>
-        </div>
-      </SignedOut>
+      <div>
+        <SignedIn>
+          <Link href={`/profile/${user?.id}`} className="flex gap-3 px-4 pb-10">
+            <UserButton />
+            <div className="flex w-full items-center justify-between">
+              <h1 className="text-18 truncate font-semibold text-white-1">
+                {user?.firstName} {user?.lastName}
+              </h1>
+              <Image
+                src={"/icons/right-arrow.svg"}
+                width={26}
+                height={26}
+                alt="arrow profile"
+              />
+            </div>
+          </Link>
+        </SignedIn>
 
-      <SignedIn>
-        <div className="flex-center w-full pb-14 max-lg:px-4 lg:pr-8">
-          <Button
-            className="text-16 w-full bg-orange-1 font-extrabold"
-            onClick={() => signOut(() => router.push("/"))}
-          >
-            Log out
-          </Button>
-        </div>
-      </SignedIn>
+        <SignedOut>
+          <div className="flex-center w-full pb-14 px-4">
+            {/* <Button className="text-16 w-full bg-[#7209b7] font-extrabold">
+              <Link href={"/sign-in"}>Sign In</Link>
+            </Button> */}
+            <GradientButton
+              title="Sign In"
+              onClickEvent={() => router.push("/sign-in")}
+            />
+          </div>
+        </SignedOut>
+
+        <SignedIn>
+          <div className="flex-center w-full pb-14 px-4">
+            <GradientButton
+              title="Log out"
+              onClickEvent={() => signOut(() => router.push("/"))}
+            />
+          </div>
+        </SignedIn>
+      </div>
     </section>
   );
 };

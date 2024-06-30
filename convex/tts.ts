@@ -3,11 +3,11 @@ import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
 // create podcast mutation
-export const createPodcast = mutation({
+export const createTts = mutation({
   args: {
     audioStorageId: v.id("_storage"),
-    podcastTitle: v.string(),
-    podcastDescription: v.string(),
+    ttsTitle: v.string(),
+    ttsDescription: v.string(),
     audioUrl: v.string(),
     imageUrl: v.string(),
     imageStorageId: v.id("_storage"),
@@ -33,11 +33,11 @@ export const createPodcast = mutation({
       throw new ConvexError("User not found");
     }
 
-    return await ctx.db.insert("podcasts", {
+    return await ctx.db.insert("tts", {
       audioStorageId: args.audioStorageId,
       user: user[0]._id,
-      podcastTitle: args.podcastTitle,
-      podcastDescription: args.podcastDescription,
+      ttsTitle: args.ttsTitle,
+      ttsDescription: args.ttsDescription,
       audioUrl: args.audioUrl,
       imageUrl: args.imageUrl,
       imageStorageId: args.imageStorageId,
@@ -64,83 +64,80 @@ export const getUrl = mutation({
 });
 
 // this query will get all the podcasts based on the voiceType of the podcast , which we are showing in the Similar Podcasts section.
-export const getPodcastByVoiceType = query({
+export const getTtsByVoiceType = query({
   args: {
-    podcastId: v.id("podcasts"),
+    ttsId: v.id("tts"),
   },
   handler: async (ctx, args) => {
-    const podcast = await ctx.db.get(args.podcastId);
+    const tts = await ctx.db.get(args.ttsId);
 
     return await ctx.db
-      .query("podcasts")
+      .query("tts")
       .filter((q) =>
         q.and(
-          q.eq(q.field("voiceType"), podcast?.voiceType),
-          q.neq(q.field("_id"), args.podcastId)
+          q.eq(q.field("voiceType"), tts?.voiceType),
+          q.neq(q.field("_id"), args.ttsId)
         )
       )
       .collect();
   },
 });
 
-// this query will get all the podcasts.
-export const getAllPodcasts = query({
+// this query will get all the tts.
+export const getAllTts = query({
   handler: async (ctx) => {
-    return await ctx.db.query("podcasts").order("desc").collect();
+    return await ctx.db.query("tts").order("desc").collect();
   },
 });
 
-// this query will get the podcast by the podcastId.
-export const getPodcastById = query({
+// this query will get the tts by the ttsId.
+export const getTtsById = query({
   args: {
-    podcastId: v.id("podcasts"),
+    ttsId: v.id("tts"),
   },
   handler: async (ctx, args) => {
-    return await ctx.db.get(args.podcastId);
+    return await ctx.db.get(args.ttsId);
   },
 });
 
-// this query will get the podcasts based on the views of the podcast , which we are showing in the Trending Podcasts section.
-export const getTrendingPodcasts = query({
+// this query will get the tts based on the views of the tts , which we are showing in the Trending Tts section.
+export const getTrendingTts = query({
   handler: async (ctx) => {
-    const podcast = await ctx.db.query("podcasts").collect();
+    const tts = await ctx.db.query("tts").collect();
 
-    return podcast.sort((a, b) => b.views - a.views).slice(0, 8);
+    return tts.sort((a, b) => b.views - a.views).slice(0, 4);
   },
 });
 
-// this query will get the podcast by the authorId.
-export const getPodcastByAuthorId = query({
+// this query will get the tts by the authorId.
+export const getTtsByAuthorId = query({
   args: {
     authorId: v.string(),
   },
   handler: async (ctx, args) => {
-    const podcasts = await ctx.db
-      .query("podcasts")
+    const tts = await ctx.db
+      .query("tts")
       .filter((q) => q.eq(q.field("authorId"), args.authorId))
       .collect();
 
-    const totalListeners = podcasts.reduce(
-      (sum, podcast) => sum + podcast.views,
-      0
-    );
+    const totalListeners = tts.reduce((sum, tts) => sum + tts.views, 0);
 
-    return { podcasts, listeners: totalListeners };
+    return { tts, listeners: totalListeners };
   },
 });
 
 // this query will get the podcast by the search query.
-export const getPodcastBySearch = query({
+export const getTtsBySearch = query({
   args: {
     search: v.string(),
   },
   handler: async (ctx, args) => {
     if (args.search === "") {
-      return await ctx.db.query("podcasts").order("desc").collect();
+      return await ctx.db.query("tts").order("desc").collect();
     }
 
     const authorSearch = await ctx.db
-      .query("podcasts")
+      .query("tts")
       .withSearchIndex("search_author", (q) => q.search("author", args.search))
       .take(10);
 
@@ -149,10 +146,8 @@ export const getPodcastBySearch = query({
     }
 
     const titleSearch = await ctx.db
-      .query("podcasts")
-      .withSearchIndex("search_title", (q) =>
-        q.search("podcastTitle", args.search)
-      )
+      .query("tts")
+      .withSearchIndex("search_title", (q) => q.search("ttsTitle", args.search))
       .take(10);
 
     if (titleSearch.length > 0) {
@@ -160,48 +155,58 @@ export const getPodcastBySearch = query({
     }
 
     return await ctx.db
-      .query("podcasts")
+      .query("tts")
       .withSearchIndex("search_body", (q) =>
-        q.search("podcastDescription" || "podcastTitle", args.search)
+        q.search("ttsDescription" || "ttsTitle", args.search)
       )
       .take(10);
   },
 });
 
-// this mutation will update the views of the podcast.
-export const updatePodcastViews = mutation({
+// this mutation will update the views of the tts.
+export const updateTtsViews = mutation({
   args: {
-    podcastId: v.id("podcasts"),
+    ttsId: v.id("tts"),
   },
   handler: async (ctx, args) => {
-    const podcast = await ctx.db.get(args.podcastId);
+    const tts = await ctx.db.get(args.ttsId);
 
-    if (!podcast) {
-      throw new ConvexError("Podcast not found");
+    if (!tts) {
+      throw new ConvexError("Tts not found");
     }
 
-    return await ctx.db.patch(args.podcastId, {
-      views: podcast.views + 1,
+    return await ctx.db.patch(args.ttsId, {
+      views: tts.views + 1,
     });
   },
 });
 
-// this mutation will delete the podcast.
-export const deletePodcast = mutation({
+// this mutation will delete the tts.
+export const deleteTts = mutation({
   args: {
-    podcastId: v.id("podcasts"),
+    ttsId: v.id("tts"),
     imageStorageId: v.id("_storage"),
     audioStorageId: v.id("_storage"),
   },
   handler: async (ctx, args) => {
-    const podcast = await ctx.db.get(args.podcastId);
+    const tts = await ctx.db.get(args.ttsId);
 
-    if (!podcast) {
-      throw new ConvexError("Podcast not found");
+    if (!tts) {
+      throw new ConvexError("Tts not found");
     }
 
     await ctx.storage.delete(args.imageStorageId);
     await ctx.storage.delete(args.audioStorageId);
-    return await ctx.db.delete(args.podcastId);
+    return await ctx.db.delete(args.ttsId);
+  },
+});
+
+export const getPaginatedTts = query({
+  args: { limit: v.optional(v.number()), offset: v.optional(v.number()) },
+  handler: async (ctx, { limit = 8, offset = 0 }) => {
+    const allTts = await ctx.db.query("tts").order("desc").take(1000);
+    const totalItems = allTts.length;
+    const paginatedTts = allTts.slice(offset, offset + limit);
+    return { items: paginatedTts, totalItems };
   },
 });

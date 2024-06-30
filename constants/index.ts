@@ -10,14 +10,14 @@ export const sidebarLinks = [
     label: "Discover",
   },
   {
-    imgURL: "/icons/microphone.svg",
-    route: "/create-podcast",
-    label: "Create Podcast",
+    imgURL: "/icons/soundStory.svg",
+    route: "/create-tts",
+    label: "Create Sound Story",
   },
   {
-    imgURL: "/icons/profile.svg",
-    route: "/profile",
-    label: "My Profile",
+    imgURL: "/icons/plans.svg",
+    route: "/plans",
+    label: "Buy Credit",
   },
 ];
 

@@ -1,12 +1,11 @@
 "use client";
 
 import { useQuery } from "convex/react";
-
 import EmptyState from "@/components/EmptyState";
 import LoaderSpinner from "@/components/LoaderSpinner";
-import PodcastCard from "@/components/PodcastCard";
 import ProfileCard from "@/components/ProfileCard";
 import { api } from "@/convex/_generated/api";
+import TtsCard from "@/components/TtsCard";
 
 const ProfilePage = ({
   params,
@@ -18,61 +17,62 @@ const ProfilePage = ({
   const user = useQuery(api.users.getUserById, {
     clerkId: params.profileId,
   });
-  const podcastsData = useQuery(api.podcasts.getPodcastByAuthorId, {
+
+  const ttsData = useQuery(api.tts.getTtsByAuthorId, {
     authorId: params.profileId,
   });
 
-  if (!user || !podcastsData) return <LoaderSpinner />;
+  if (!user) return <LoaderSpinner />;
 
-  const normalizedPodcastsData = podcastsData
+  const normalizedTtsData = ttsData
     ? {
-        ...podcastsData,
-        podcasts: podcastsData.podcasts.map((podcast) => ({
-          ...podcast,
-          audioUrl: podcast.audioUrl ?? null,
-          imageUrl: podcast.imageUrl ?? null,
-          audioStorageId: podcast.audioStorageId ?? null,
-          imageStorageId: podcast.imageStorageId ?? null,
+        ...ttsData,
+        tts: ttsData.tts.map((ttss) => ({
+          ...ttss,
+          audioUrl: ttss.audioUrl ?? null,
+          imageUrl: ttss.imageUrl ?? null,
+          audioStorageId: ttss.audioStorageId ?? null,
+          imageStorageId: ttss.imageStorageId ?? null,
         })),
       }
     : null;
 
   return (
-    <section className="mt-9 flex flex-col">
-      <h1 className="text-20 font-bold text-white-1 max-md:text-center">
+    <section className="mt-9 flex flex-col z-10">
+      <h1 className="text-20 font-bold text-black-1 max-md:text-center">
         Podcaster Profile
       </h1>
       <div className="mt-6 flex flex-col gap-6 max-md:items-center md:flex-row">
         <ProfileCard
-          podcastData={normalizedPodcastsData!}
+          ttsData={normalizedTtsData!}
           imageUrl={user?.imageUrl!}
           userFirstName={user?.name!}
         />
       </div>
-      <section className="mt-9 flex flex-col gap-5">
-        <h1 className="text-20 font-bold text-white-1">All Podcasts</h1>
-        {podcastsData && podcastsData.podcasts.length > 0 ? (
+      <div className="mt-9 flex flex-col gap-5">
+        <h1 className="text-20 font-bold text-black-1">
+          All Stories Generated:
+        </h1>
+        {ttsData && ttsData.tts.length > 0 ? (
           <div className="podcast_grid">
-            {podcastsData?.podcasts
-              ?.slice(0, 4)
-              .map((podcast) => (
-                <PodcastCard
-                  key={podcast._id}
-                  imgUrl={podcast.imageUrl!}
-                  title={podcast.podcastTitle!}
-                  description={podcast.podcastDescription}
-                  podcastId={podcast._id}
-                />
-              ))}
+            {ttsData?.tts.map((ttss) => (
+              <TtsCard
+                key={ttss._id}
+                imgUrl={ttss.imageUrl!}
+                title={ttss.ttsTitle!}
+                description={ttss.ttsDescription}
+                ttsId={ttss._id}
+              />
+            ))}
           </div>
         ) : (
           <EmptyState
-            title="You have not created any podcasts yet"
-            buttonLink="/create-podcast"
-            buttonText="Create Podcast"
+            title="You have not created any audio's yet"
+            buttonLink="/create-tts"
+            buttonText="Generate Audio"
           />
         )}
-      </section>
+      </div>
     </section>
   );
 };

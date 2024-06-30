@@ -1,10 +1,10 @@
 import LeftSidebar from "@/components/LeftSidebar";
 import MobileNav from "@/components/MobileNav";
-import RightSidebar from "@/components/RightSidebar";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Toaster } from "@/components/ui/toaster";
 import AudioPlayer from "@/components/AudioPlayer";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,8 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="relative flex flex-col">
-      <main className="relative flex bg-black-3">
+    <div className="flex flex-col h-auto">
+      <main className="relative flex dark:bg-black-1 bg-white-1 dark:bg-dot-white/[1] bg-dot-black-1/[0.2]">
+        <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black-1 bg-white-1 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+
         <LeftSidebar />
 
         <section className="flex min-h-screen flex-1 flex-col px-4 sm:px-14">
@@ -38,11 +40,10 @@ export default function RootLayout({
               {children}
             </div>
           </div>
+
+          <Footer />
         </section>
-
-        <RightSidebar />
       </main>
-
       <AudioPlayer />
     </div>
   );

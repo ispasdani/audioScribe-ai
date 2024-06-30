@@ -18,6 +18,27 @@ export const getUserById = query({
   },
 });
 
+export const subtractUserCredit = internalMutation({
+  args: { userId: v.id("users") },
+  handler: async (ctx, { userId }) => {
+    const user = await ctx.db.get(userId);
+
+    if (!user) {
+      throw new ConvexError("User not found");
+    }
+
+    if (user.credits < 1) {
+      throw new ConvexError("Not enough credits");
+    }
+
+    await ctx.db.patch(user._id, {
+      credits: user.credits - 1,
+    });
+
+    return user.credits - 1;
+  },
+});
+
 // this query is used to get the top user by podcast count. first the podcast is sorted by views and then the user is sorted by total podcasts, so the user with the most podcasts will be at the top.
 export const getTopUserByPodcastCount = query({
   args: {},
@@ -27,7 +48,7 @@ export const getTopUserByPodcastCount = query({
     const userData = await Promise.all(
       user.map(async (u) => {
         const podcasts = await ctx.db
-          .query("podcasts")
+          .query("tts")
           .filter((q) => q.eq(q.field("authorId"), u.clerkId))
           .collect();
 
@@ -37,7 +58,7 @@ export const getTopUserByPodcastCount = query({
           ...u,
           totalPodcasts: podcasts.length,
           podcast: sortedPodcasts.map((p) => ({
-            podcastTitle: p.podcastTitle,
+            podcastTitle: p.ttsTitle,
             podcastId: p._id,
           })),
         };
@@ -54,6 +75,7 @@ export const createUser = internalMutation({
     email: v.string(),
     imageUrl: v.string(),
     name: v.string(),
+    credits: v.number(),
   },
   handler: async (ctx, args) => {
     await ctx.db.insert("users", {
@@ -61,6 +83,7 @@ export const createUser = internalMutation({
       email: args.email,
       imageUrl: args.imageUrl,
       name: args.name,
+      credits: args.credits ? args.credits : 0,
     });
   },
 });
@@ -87,7 +110,7 @@ export const updateUser = internalMutation({
     });
 
     const podcast = await ctx.db
-      .query("podcasts")
+      .query("tts")
       .filter((q) => q.eq(q.field("authorId"), args.clerkId))
       .collect();
 

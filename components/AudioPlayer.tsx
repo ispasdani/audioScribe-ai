@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -8,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { useAudio } from "@/app/providers/AudioProvider";
 
 import { Progress } from "./ui/progress";
+import { X } from "lucide-react";
 
 const AudioPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -15,7 +17,7 @@ const AudioPlayer = () => {
   const [duration, setDuration] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const { audio } = useAudio();
+  const { audio, setAudio } = useAudio();
 
   const togglePlayPause = () => {
     if (audioRef.current?.paused) {
@@ -95,7 +97,7 @@ const AudioPlayer = () => {
 
   return (
     <div
-      className={cn("sticky bottom-0 left-0 flex size-full flex-col", {
+      className={cn("sticky bottom-0 left-0 flex size-full flex-col z-30", {
         hidden: !audio?.audioUrl || audio?.audioUrl === "",
       })}
     >
@@ -160,6 +162,13 @@ const AudioPlayer = () => {
           </div>
         </div>
         <div className="flex items-center gap-6">
+          <button
+            type="button"
+            className="text-white-1"
+            onClick={() => setAudio(undefined)}
+          >
+            <X />
+          </button>
           <h2 className="text-16 font-normal text-white-2 max-md:hidden">
             {formatTime(duration)}
           </h2>

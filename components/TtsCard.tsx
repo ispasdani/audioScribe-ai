@@ -1,20 +1,21 @@
-import { PodcastCardProps } from "@/types";
+"use client";
+
+import { api } from "@/convex/_generated/api";
+import { TtsCardProps } from "@/types";
+import { useMutation } from "convex/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const PodcastCard = ({
-  imgUrl,
-  title,
-  description,
-  podcastId,
-}: PodcastCardProps) => {
+const TtsCard = ({ imgUrl, title, description, ttsId }: TtsCardProps) => {
   const router = useRouter();
+  const updateViews = useMutation(api.tts.updateTtsViews);
 
-  const handleViews = () => {
+  const handleViews = async () => {
     //increase views...
+    await updateViews({ ttsId });
 
-    router.push(`/podcasts/${podcastId}`, {
+    router.push(`/tts/${ttsId}`, {
       scroll: true,
     });
   };
@@ -30,8 +31,8 @@ const PodcastCard = ({
           className="aspect-square h-fit w-full rounded-xl 2xl:size-[200px]"
         />
         <div className="flex flex-col">
-          <h1 className="text-16 truncate font-bold text-white-1">{title}</h1>
-          <h2 className="text-12 truncate font-normal capitalize text-white-4">
+          <h1 className="text-16 truncate font-bold text-black-1">{title}</h1>
+          <h2 className="text-12 truncate font-normal capitalize text-black-4">
             {description}
           </h2>
         </div>
@@ -40,4 +41,4 @@ const PodcastCard = ({
   );
 };
 
-export default PodcastCard;
+export default TtsCard;

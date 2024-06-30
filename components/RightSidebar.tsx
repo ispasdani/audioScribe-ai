@@ -26,33 +26,17 @@ const RightSidebar = () => {
 
   return (
     <section
-      className={cn("right_sidebar text-white-1 h-[calc(100vh-5px)]", {
-        "h-[calc(100vh-116px)]": audio?.audioUrl,
-      })}
+      // className={cn("right_sidebar text-white-1 h-[calc(100vh-5px)]", {
+      //   "h-[calc(100vh-116px)]": audio?.audioUrl,
+      // })}
+      className="right_sidebar"
     >
-      <SignedIn>
-        <Link href={`/profile/${user?.id}`} className="flex gap-3 pb-12">
-          <UserButton />
-          <div className="flex w-full items-center justify-between">
-            <h1 className="text-16 truncate font-semibold text-white-1">
-              {user?.firstName} {user?.lastName}
-            </h1>
-            <Image
-              src={"/icons/right-arrow.svg"}
-              width={24}
-              height={24}
-              alt="arrow profile"
-            />
-          </div>
-        </Link>
-      </SignedIn>
-
-      <section>
+      {/* <section>
         <Header headerTitle="Fans Like You" />
-        {/* <Carousel fansLikeDetail={topPodcasters} /> */}
-      </section>
+        <Carousel fansLikeDetail={topPodcasters} />
+      </section> */}
 
-      <section className="flex flex-col gap-8 pt-12">
+      {/* <section className="flex flex-col gap-8 pt-12">
         <Header headerTitle="Top Podcasters" />
         <div className="flex flex-col gap-6">
           {topPodcasters?.slice(0, 4).map((podcaster) => (
@@ -82,7 +66,7 @@ const RightSidebar = () => {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
     </section>
   );
 };

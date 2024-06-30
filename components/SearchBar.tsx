@@ -21,7 +21,7 @@ const SearchBar = () => {
   }, [router, pathname, debouncedValue]);
 
   return (
-    <div className="relative mt-8 block">
+    <div className="relative mt-8 block z-10">
       <Input
         className="input-class py-6 pl-12 focus-visible:ring-offset-orange-1"
         placeholder="Search for podcasts"

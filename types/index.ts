@@ -11,7 +11,7 @@ export interface EmptyStateProps {
   buttonLink?: string;
 }
 
-export interface TopPodcastersProps {
+export interface TopTtstersProps {
   _id: Id<"users">;
   _creationTime: number;
   email: string;
@@ -20,18 +20,18 @@ export interface TopPodcastersProps {
   name: string;
   podcast: {
     podcastTitle: string;
-    podcastId: Id<"podcasts">;
+    podcastId: Id<"tts">;
   }[];
   totalPodcasts: number;
 }
 
-export interface PodcastProps {
-  _id: Id<"podcasts">;
+export interface TtsProps {
+  _id: Id<"tts">;
   _creationTime: number;
   audioStorageId?: Id<"_storage"> | null;
   user: Id<"users">;
-  podcastTitle: string;
-  podcastDescription: string;
+  ttsTitle: string;
+  ttsDescription: string;
   audioUrl: string | null;
   imageUrl: string | null;
   imageStorageId: Id<"_storage"> | null;
@@ -45,13 +45,14 @@ export interface PodcastProps {
   views: number;
 }
 
-export interface ProfilePodcastProps {
-  podcasts: PodcastProps[];
+export interface ProfileTtsProps {
+  tts: TtsProps[];
   listeners: number;
 }
 
-export interface GeneratePodcastProps {
+export interface GenerateTtsProps {
   voiceType: string;
+  userId: string;
   setAudio: Dispatch<SetStateAction<string>>;
   audio: string;
   setAudioStorageId: Dispatch<SetStateAction<Id<"_storage"> | null>>;
@@ -61,6 +62,7 @@ export interface GeneratePodcastProps {
 }
 
 export interface GenerateThumbnailProps {
+  userId: string;
   setImage: Dispatch<SetStateAction<string>>;
   setImageStorageId: Dispatch<SetStateAction<Id<"_storage"> | null>>;
   image: string;
@@ -68,7 +70,7 @@ export interface GenerateThumbnailProps {
   setImagePrompt: Dispatch<SetStateAction<string>>;
 }
 
-export interface LatestPodcastCardProps {
+export interface LatestTtsCardProps {
   imgUrl: string;
   title: string;
   duration: string;
@@ -76,16 +78,16 @@ export interface LatestPodcastCardProps {
   audioUrl: string;
   author: string;
   views: number;
-  podcastId: Id<"podcasts">;
+  ttsId: Id<"tts">;
 }
 
-export interface PodcastDetailPlayerProps {
+export interface TtsDetailPlayerProps {
   audioUrl: string;
-  podcastTitle: string;
+  ttsTitle: string;
   author: string;
   isOwner: boolean;
   imageUrl: string;
-  podcastId: Id<"podcasts">;
+  ttsId: Id<"tts">;
   imageStorageId: Id<"_storage">;
   audioStorageId: Id<"_storage">;
   authorImageUrl: string;
@@ -97,7 +99,8 @@ export interface AudioProps {
   audioUrl: string;
   author: string;
   imageUrl: string;
-  podcastId: string;
+  podcastId?: string;
+  ttsId?: string;
 }
 
 export interface AudioContextType {
@@ -105,19 +108,19 @@ export interface AudioContextType {
   setAudio: React.Dispatch<React.SetStateAction<AudioProps | undefined>>;
 }
 
-export interface PodcastCardProps {
+export interface TtsCardProps {
   imgUrl: string;
   title: string;
   description: string;
-  podcastId: Id<"podcasts">;
+  ttsId: Id<"tts">;
 }
 
 export interface CarouselProps {
-  fansLikeDetail: TopPodcastersProps[];
+  fansLikeDetail: TopTtstersProps[];
 }
 
 export interface ProfileCardProps {
-  podcastData: ProfilePodcastProps;
+  ttsData: ProfileTtsProps;
   imageUrl: string;
   userFirstName: string;
 }

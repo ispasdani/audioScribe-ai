@@ -34,16 +34,21 @@ import { useToast } from "@/components/ui/use-toast";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
+import LoaderSpinner from "@/components/LoaderSpinner";
 
 const voiceCategories = ["alloy", "shimmer", "nova", "echo", "fable", "onyx"];
 
 const formSchema = z.object({
-  podcastTitle: z.string().min(2),
-  podcastDescription: z.string().min(2),
+  ttsTitle: z.string().min(2),
+  ttsDescription: z.string().min(2),
 });
 
-const CreatePodcast = () => {
+const CreateTts = () => {
   const router = useRouter();
+  const { user } = useUser();
+
+  if (!user) return <LoaderSpinner />;
 
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -63,14 +68,14 @@ const CreatePodcast = () => {
   const [voiceType, setVoiceType] = useState<string | null>(null);
   const [voicePrompt, setVoicePrompt] = useState("");
 
-  const createPodcast = useMutation(api.podcasts.createPodcast);
+  const createTts = useMutation(api.tts.createTts);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      podcastTitle: "",
-      podcastDescription: "",
+      ttsTitle: "",
+      ttsDescription: "",
     },
   });
 
@@ -89,9 +94,9 @@ const CreatePodcast = () => {
         );
       }
 
-      const podcast = await createPodcast({
-        podcastTitle: data.podcastTitle,
-        podcastDescription: data.podcastDescription,
+      const tts = await createTts({
+        ttsTitle: data.ttsTitle,
+        ttsDescription: data.ttsDescription,
         audioUrl,
         imageUrl,
         voiceType,
@@ -103,7 +108,7 @@ const CreatePodcast = () => {
         imageStorageId: imageStorageId!,
       });
 
-      toast({ title: "Podcast created" });
+      toast({ title: "Audio created" });
       setIsSubmitting(false);
 
       router.push("/");
@@ -115,56 +120,58 @@ const CreatePodcast = () => {
   }
 
   return (
-    <section className="mt-10 flex flex-col">
-      <h1 className="text-20 font-bold text-white-1">Create Podcast</h1>
+    <section className="mt-10 flex flex-col z-10">
+      <h1 className="text-6xl mb-8 font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-500">
+        Generate Audio
+      </h1>
 
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="mt-12 flex w-full flex-col"
         >
-          <div className="flex flex-col gap-[30px] border-b border-black-5 pb-10">
+          <div className="flex flex-col shadow-[0_8px_30px_rgb(0,0,0,0.12)] bg-white-1 gap-[30px] border-dashed border-2 border-gray-200 rounded-lg px-3 py-6">
             <FormField
               control={form.control}
-              name="podcastTitle"
+              name="ttsTitle"
               render={({ field }) => (
                 <FormItem className="flex flex-col gap-2.5">
-                  <FormLabel className="text-16 font-bold text-white-1">
+                  <FormLabel className="text-xl font-bold text-black-1">
                     Title
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="AudioScribe AI"
+                      placeholder="Write a title..."
                       {...field}
-                      className="input-class focus-visible:ring-offset-orange-1"
+                      className="input-class focus-visible:ring-offset-purple-600"
                     />
                   </FormControl>
-                  <FormMessage className="text-white-1" />
+                  <FormMessage className="text-black-1" />
                 </FormItem>
               )}
             />
 
             <div className="flex flex-col gap-2.5">
-              <Label className="text-16 font-bold text-white-1">
+              <Label className="text-xl font-bold text-black-1">
                 Select AI Voice
               </Label>
               <Select onValueChange={(value) => setVoiceType(value)}>
                 <SelectTrigger
                   className={cn(
-                    "text-16 w-full border-none bg-black-1 text-gray-1 focus-visible:ring-offset-orange-1"
+                    "text-16 w-full border-none bg-gray-100 text-gray-400 focus-visible:ring-offset-purple-600"
                   )}
                 >
                   <SelectValue
-                    placeholder="Select AI Voice"
-                    className="placeholder:text-gray-1 "
+                    placeholder="Select AI Voice..."
+                    className="placeholder-gray-100 text-16"
                   />
                 </SelectTrigger>
-                <SelectContent className="text-16 border-none bg-black-1 font-bold text-white-1 focus:ring-orange-1">
+                <SelectContent className="text-16 border-none bg-gray-100 font-bold text-black-1 focus:text-black-1">
                   {voiceCategories.map((category) => (
                     <SelectItem
                       key={category}
                       value={category}
-                      className="capitalize focus:bg-orange-1"
+                      className="capitalize focus:bg-purple-600 focus:text-white-1"
                     >
                       {category}
                     </SelectItem>
@@ -182,17 +189,17 @@ const CreatePodcast = () => {
 
             <FormField
               control={form.control}
-              name="podcastDescription"
+              name="ttsDescription"
               render={({ field }) => (
                 <FormItem className="flex flex-col gap-2.5">
-                  <FormLabel className="text-16 font-bold text-white-1">
+                  <FormLabel className="text-xl font-bold text-black-1">
                     Description
                   </FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Write a short podcast description"
+                      placeholder="Write a short podcast description..."
                       {...field}
-                      className="input-class focus-visible:ring-offset-orange-1"
+                      className="input-class focus-visible:ring-offset-purple-600"
                     />
                   </FormControl>
                   <FormMessage className="text-white-1" />
@@ -201,8 +208,9 @@ const CreatePodcast = () => {
             />
           </div>
 
-          <div className="flex flex-col pt-10">
+          <div className="flex flex-col">
             <GeneratePodcast
+              userId={user?.id}
               setAudioStorageId={setAudioStorageId}
               setAudio={setAudioUrl}
               voiceType={voiceType ? voiceType : ""}
@@ -218,12 +226,13 @@ const CreatePodcast = () => {
               image={imageUrl}
               imagePrompt={imagePrompt}
               setImagePrompt={setImagePrompt}
+              userId={user?.id}
             />
 
             <div className="mt-10 w-full">
               <Button
                 type="submit"
-                className="text-16 w-full bg-orange-1 py-4 font-extrabold text-white-1 transition-all duration-500 hover:bg-black-1"
+                className="text-16 w-full bg-purple-600 py-4 font-extrabold text-white-1 transition-all duration-500 hover:shadow-[0_10px_20px_rgba(147,_51,_234,_0.7)]"
               >
                 {isSubmitting ? (
                   <>
@@ -231,7 +240,7 @@ const CreatePodcast = () => {
                     <Loader size={20} className="animate-spin" />
                   </>
                 ) : (
-                  "Submit & Publish Podcast"
+                  "Submit & Publish Audio"
                 )}
               </Button>
             </div>
@@ -242,4 +251,4 @@ const CreatePodcast = () => {
   );
 };
 
-export default CreatePodcast;
+export default CreateTts;

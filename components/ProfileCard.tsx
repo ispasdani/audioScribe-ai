@@ -3,37 +3,37 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import { useAudio } from "@/app/providers/AudioProvider";
-import { PodcastProps, ProfileCardProps } from "@/types";
+import { TtsProps, ProfileCardProps } from "@/types";
 
 import LoaderSpinner from "./LoaderSpinner";
 import { Button } from "./ui/button";
 
 const ProfileCard = ({
-  podcastData,
+  ttsData,
   imageUrl,
   userFirstName,
 }: ProfileCardProps) => {
   const { setAudio } = useAudio();
 
-  const [randomPodcast, setRandomPodcast] = useState<PodcastProps | null>(null);
+  const [randomTts, setRandomTts] = useState<TtsProps | null>(null);
 
   const playRandomPodcast = () => {
-    const randomIndex = Math.floor(Math.random() * podcastData.podcasts.length);
+    const randomIndex = Math.floor(Math.random() * ttsData.tts.length);
 
-    setRandomPodcast(podcastData.podcasts[randomIndex]);
+    setRandomTts(ttsData.tts[randomIndex]);
   };
 
   useEffect(() => {
-    if (randomPodcast) {
+    if (randomTts) {
       setAudio({
-        title: randomPodcast.podcastTitle,
-        audioUrl: randomPodcast.audioUrl || "",
-        imageUrl: randomPodcast.imageUrl || "",
-        author: randomPodcast.author,
-        podcastId: randomPodcast._id,
+        title: randomTts.ttsTitle,
+        audioUrl: randomTts.audioUrl || "",
+        imageUrl: randomTts.imageUrl || "",
+        author: randomTts.author,
+        podcastId: randomTts._id,
       });
     }
-  }, [randomPodcast, setAudio]);
+  }, [randomTts, setAudio]);
 
   if (!imageUrl) return <LoaderSpinner />;
 
@@ -46,7 +46,7 @@ const ProfileCard = ({
         alt="Podcaster"
         className="aspect-square rounded-lg"
       />
-      <div className="flex flex-col justify-center max-md:items-center">
+      <div className="flex flex-col justify-between max-md:items-center">
         <div className="flex flex-col gap-2.5">
           <figure className="flex gap-2 max-md:justify-center">
             <Image
@@ -55,30 +55,30 @@ const ProfileCard = ({
               height={15}
               alt="verified"
             />
-            <h2 className="text-14 font-medium text-white-2">
+            <h2 className="text-14 font-medium text-black-2">
               Verified Creator
             </h2>
           </figure>
-          <h1 className="text-32 font-extrabold tracking-[-0.32px] text-white-1">
+          <h1 className="text-32 font-extrabold tracking-[-0.32px] text-black-1 mb-4">
             {userFirstName}
           </h1>
         </div>
-        <figure className="flex gap-3 py-6">
+        {/* <figure className="flex gap-3 py-6">
           <Image
             src="/icons/headphone.svg"
             width={24}
             height={24}
             alt="headphones"
           />
-          <h2 className="text-16 font-semibold text-white-1">
+          <h2 className="text-16 font-semibold text-black-1">
             {podcastData?.listeners} &nbsp;
-            <span className="font-normal text-white-2">monthly listeners</span>
+            <span className="font-normal text-black-2">monthly listeners</span>
           </h2>
-        </figure>
-        {podcastData?.podcasts.length > 0 && (
+        </figure> */}
+        {ttsData?.tts.length > 0 && (
           <Button
             onClick={playRandomPodcast}
-            className="text-16 bg-orange-1 font-extrabold text-white-1"
+            className="text-16 bg-purple-600 font-extrabold text-white-1"
           >
             <Image
               src="/icons/Play.svg"
@@ -86,7 +86,7 @@ const ProfileCard = ({
               height={20}
               alt="random play"
             />{" "}
-            &nbsp; Play a random podcast
+            &nbsp; Play a random audio
           </Button>
         )}
       </div>

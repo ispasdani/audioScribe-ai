@@ -19,6 +19,7 @@ const GenerateThumbnail = ({
   image,
   imagePrompt,
   setImagePrompt,
+  userId,
 }: GenerateThumbnailProps) => {
   const [isAiThumbnail, setIsAiThumbnail] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(false);
@@ -26,11 +27,13 @@ const GenerateThumbnail = ({
   const { toast } = useToast();
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
   const { startUpload } = useUploadFiles(generateUploadUrl);
-  const getImageUrl = useMutation(api.podcasts.getUrl);
+  const getImageUrl = useMutation(api.tts.getUrl);
   const handleGenerateThumbnail = useAction(api.openai.generateImageAction);
+  const [startedGenerating, setStartedGenerating] = useState(false);
 
   const handleImage = async (blob: Blob, fileName: string) => {
     setIsImageLoading(true);
+    setStartedGenerating(false);
     setImage("");
     try {
       const file = new File([blob], fileName, { type: "image/png" });
@@ -50,14 +53,20 @@ const GenerateThumbnail = ({
         title: "Thumbnail generated successfully",
       });
     } catch (error) {
+      setIsImageLoading(false);
+      setStartedGenerating(false);
       console.log(error);
       toast({ title: "Error generating Thumbnail", variant: "destructive" });
     }
   };
 
   const generateImage = async () => {
+    setStartedGenerating(true);
     try {
-      const response = await handleGenerateThumbnail({ prompt: imagePrompt });
+      const response = await handleGenerateThumbnail({
+        prompt: imagePrompt,
+        userId: userId,
+      });
 
       const blob = new Blob([response], { type: "image/png" });
 
@@ -87,13 +96,15 @@ const GenerateThumbnail = ({
   };
 
   return (
-    <>
+    <div className="shadow-[0_8px_30px_rgb(0,0,0,0.12)] bg-white-1 border-dashed border-2 border-gray-200 rounded-lg px-3 py-6 mt-10">
       <div className="generate_thumbnail">
         <Button
           type="button"
           variant="plain"
           onClick={() => setIsAiThumbnail(true)}
-          className={cn("", { "bg-black-6": isAiThumbnail })}
+          className={cn("text-black-1", {
+            "bg-purple-600 text-white-1": isAiThumbnail,
+          })}
         >
           Use AI to generate thumbnail
         </Button>
@@ -101,7 +112,9 @@ const GenerateThumbnail = ({
           type="button"
           variant="plain"
           onClick={() => setIsAiThumbnail(false)}
-          className={cn("", { "bg-black-6": !isAiThumbnail })}
+          className={cn("text-black-1", {
+            "bg-purple-600 text-white-1": !isAiThumbnail,
+          })}
         >
           Upload custom image
         </Button>
@@ -109,21 +122,21 @@ const GenerateThumbnail = ({
       {isAiThumbnail ? (
         <div className="flex flex-col gap-5">
           <div className="mt-5 flex flex-col gap-2.5">
-            <Label className="text-16 font-bold text-white-1">
-              AI Prompt to generate Thumbnail
+            <Label className="text-16 font-bold text-black-1 mt-3">
+              AI Prompt to generate cover
             </Label>
             <Textarea
-              className="input-class font-light focus-visible:ring-offset-orange-1"
-              placeholder="Provide text to generate thumbnail"
+              className="input-class font-light focus-visible:ring-offset-purple-600"
+              placeholder="Provide text to generate cover..."
               rows={5}
               value={imagePrompt}
               onChange={(e) => setImagePrompt(e.target.value)}
             />
           </div>
-          <div className="w-full max-w-[200px]">
+          <div className="w-full max-w-[300px] flex justify-start items-center">
             <Button
-              type="submit"
-              className="text-16 bg-orange-1 py-4 font-bold text-white-1 transition-all"
+              type="button"
+              className="text-16 bg-purple-600 duration-500 hover:shadow-[0_10px_20px_rgba(147,_51,_234,_0.7)] py-4 font-bold text-white-1 transition-all"
               onClick={generateImage}
             >
               {isImageLoading ? (
@@ -135,6 +148,9 @@ const GenerateThumbnail = ({
                 "Generate"
               )}
             </Button>
+            {startedGenerating && (
+              <Loader className="ml-3 animate-spin text-purple-600" />
+            )}
           </div>
         </div>
       ) : (
@@ -159,7 +175,9 @@ const GenerateThumbnail = ({
             </div>
           )}
           <div className="flex flex-col items-center gap-1">
-            <h2 className="text-12 font-bold text-orange-1">Click to upload</h2>
+            <h2 className="text-12 font-bold text-purple-600">
+              Click to upload
+            </h2>
             <p className="text-12 font-normal text-gray-1">
               SVG, PNG, JPG, or GIF (max. 1080x1080px)
             </p>
@@ -177,7 +195,7 @@ const GenerateThumbnail = ({
           />
         </div>
       )}
-    </>
+    </div>
   );
 };
 
