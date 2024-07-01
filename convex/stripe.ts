@@ -52,8 +52,7 @@ export const createCheckoutSession = action({
     { runQuery, runMutation },
     { userId, planId }: CreateCheckoutSessionArgs
   ): Promise<string | null> => {
-    const domain =
-      process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000";
+    const domain = process.env.NEXT_PUBLIC_SERVER_URL;
     const stripe = new Stripe(process.env.STRIPE_KEY_SECRET!, {
       apiVersion: "2024-06-20",
     });
