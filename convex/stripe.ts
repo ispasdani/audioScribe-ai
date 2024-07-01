@@ -91,7 +91,7 @@ export const createCheckoutSession = action({
         ],
         mode: "payment",
         success_url: `${domain}/`,
-        cancel_url: `${domain}/cancel`,
+        cancel_url: `${domain}/`,
         // automatic_tax: { enabled: true },
       });
 
