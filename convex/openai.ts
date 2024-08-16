@@ -53,6 +53,7 @@ export const generateImageAction = action({
     });
 
     const url = response.data[0].url;
+    console.log("url", url);
 
     if (!url) {
       throw new ConvexError("Error generating image");
