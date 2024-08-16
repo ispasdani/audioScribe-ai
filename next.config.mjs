@@ -11,6 +11,10 @@ const nextConfig = {
         hostname: "kindly-finch-810.convex.cloud",
       },
       { protocol: "https", hostname: "img.clerk.com" },
+      {
+        protocol: "https",
+        hostname: "loyal-gerbil-2.convex.cloud", // Add this line
+      },
     ],
   },
 };
