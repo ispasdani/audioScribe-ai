@@ -1,0 +1,58 @@
+export const examples = [
+  {
+    title: "Master Chief Speech for hard times",
+    audioUrl: "/examples/masterchiefhardtimes/audio.mp3",
+    imageUrl: "/examples/masterchiefhardtimes/cover.png",
+    author: "Ispas Daniel-Nicolae",
+    ttsId: "o4j39ivhh9v83h9vhi3rjiovjrh",
+  },
+  {
+    title: "The Clay Court Dream",
+    audioUrl: "/examples/lukastennisplayer/audio.mp3",
+    imageUrl: "/examples/lukastennisplayer/cover.png",
+    author: "Ispas Daniel-Nicolae",
+    ttsId: "fdjfoshdufyui84yuuhvuihih4",
+  },
+  {
+    title: "Guide to Interacting with a Newborn",
+    audioUrl: "/examples/newborn/audio.mp3",
+    imageUrl: "/examples/newborn/cover.png",
+    author: "Anna Kublova",
+    ttsId: "m2j9f843hv9h4eh89he9",
+  },
+  {
+    title: "Story of Max",
+    audioUrl: "/examples/storyofmax/audio.mp3",
+    imageUrl: "/examples/storyofmax/cover.png",
+    author: "Peter Bjørn",
+    ttsId: "oifj398hg9h4n39hv98h3",
+  },
+  {
+    title: "Ultimate Guide to Becoming a Streamer",
+    audioUrl: "/examples/streamerguide/audio.mp3",
+    imageUrl: "/examples/streamerguide/cover.png",
+    author: "Sonja Egidio",
+    ttsId: "vj3894h78gdnjrndo",
+  },
+  {
+    title: "The First Howl",
+    audioUrl: "/examples/thefirsthowl/audio.mp3",
+    imageUrl: "/examples/thefirsthowl/cover.png",
+    author: "Piia Millie",
+    ttsId: "fkof3ijhg9huvh",
+  },
+  {
+    title: "The Whispers of Castle Dracul",
+    audioUrl: "/examples/thewhispersofcastledracul/audio.mp3",
+    imageUrl: "/examples/thewhispersofcastledracul/cover.png",
+    author: "Eugenia Shel",
+    ttsId: "gmidojhguhdiodj",
+  },
+  {
+    title: "A Message to All Dads",
+    audioUrl: "/examples/toalldads/audio.mp3",
+    imageUrl: "/examples/toalldads/cover.png",
+    author: "Knud Larson",
+    ttsId: "gmhfdhi974vh3v3rv4trty4dj",
+  },
+];

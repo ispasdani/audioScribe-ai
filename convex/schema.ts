@@ -1,3 +1,4 @@
+import { Description } from "@radix-ui/react-toast";
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
@@ -39,10 +40,15 @@ export default defineSchema({
   }).index("stripeIdIndex", ["stripeId"]),
   plans: defineTable({
     name: v.string(),
-    icon: v.string(),
     price: v.number(),
     credits: v.number(),
-    characters: v.number(),
     imageGeneration: v.number(),
+    description: v.string(),
+    messageOne: v.string(),
+    messageTwo: v.string(),
+    messageThree: v.string(),
+    messageFour: v.string(),
+    messageFive: v.string(),
+    messageSix: v.string(),
   }),
 });

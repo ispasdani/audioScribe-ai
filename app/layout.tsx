@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import ConvexClerkProvider from "./providers/ConvexClerkProvider";
 import AudioProvider from "./providers/AudioProvider";
 
-const manrope = Manrope({ subsets: ["latin"] });
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "500", "700", "900"],
+});
 
 export const metadata: Metadata = {
   title: "AudioScribe AI",
@@ -23,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <ConvexClerkProvider>
         <AudioProvider>
-          <body className={manrope.className}>{children}</body>
+          <body className={roboto.className}>{children}</body>
         </AudioProvider>
       </ConvexClerkProvider>
     </html>

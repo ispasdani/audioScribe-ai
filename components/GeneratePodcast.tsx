@@ -93,15 +93,13 @@ const GeneratePodcast = (props: GenerateTtsProps) => {
   }, [props.voicePrompt]);
 
   return (
-    <div className="shadow-[0_8px_30px_rgb(0,0,0,0.12)] bg-white-1 border-dashed border-2 border-gray-200 rounded-lg px-3 py-6 mt-10">
+    <div className="w-full shadow-md bg-white-1 border border-gray-200 rounded-lg p-4 mt-10">
       <div className="flex flex-col gap-2.5 ">
-        <Label className="text-xl font-bold text-black-1">
-          AI Prompt to generate Audio
-        </Label>
+        <Label className="text-xl font-bold text-black-1">Text to Speech</Label>
         <Textarea
-          className="input-class font-light focus-visible:ring-offset-purple-600"
+          className="input-class font-light bg-gray-50 focus-visible:ring-offset-[#3841e6]"
           placeholder="Provide text to generate audio..."
-          rows={5}
+          rows={8}
           value={props.voicePrompt}
           onChange={(e) => props.setVoicePrompt(e.target.value)}
           maxLength={MAX_CHARACTERS} // Limit to 4000 characters
@@ -112,10 +110,10 @@ const GeneratePodcast = (props: GenerateTtsProps) => {
           {remainingChars} characters remaining
         </div>
       </div>
-      <div className="mt-5 w-full max-w-[200px]">
+      <div className="w-full mt-3">
         <Button
           type="button"
-          className="text-16 bg-purple-600 duration-500 hover:shadow-[0_10px_20px_rgba(147,_51,_234,_0.7)] py-4 font-bold text-white-1 transition-all"
+          className="w-full text-16 bg-[#3841e6] duration-500 hover:shadow-[0_10px_20px_rgba(56,_65,_230,_0.7)] py-4 font-bold text-white-1 transition-all"
           onClick={generateTts}
         >
           {isGenerating ? (
@@ -129,7 +127,7 @@ const GeneratePodcast = (props: GenerateTtsProps) => {
         </Button>
       </div>
 
-      {props.audio && (
+      {/* {props.audio && (
         <audio
           controls
           src={props.audio}
@@ -139,7 +137,7 @@ const GeneratePodcast = (props: GenerateTtsProps) => {
             props.setAudioDuration(e.currentTarget.duration)
           }
         />
-      )}
+      )} */}
     </div>
   );
 };

@@ -1,64 +1,76 @@
+import { soMeIcons } from "@/constants/some";
+import { Mail } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import IconModal from "./IconModal";
 
 const Footer = () => {
   return (
-    <div className="w-full mt-40 px-5 py-10 min-h-[35vh] flex flex-col justify-between bg-white-1 relative bottom-0 border-dashed border-t-2 border-l-2 border-r-2 rounded-t-xl border-purple-600">
-      <div className="w-full flex justify-around items-start flex-wrap">
-        <div className="w-[300px]">
-          <h2 className="font-bold text-2xl">
-            Audio
-            <span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-500 mr-2">
-              Scribe
-            </span>
-            AI
-          </h2>
-          <p className="mt-3">
-            Empowering Contect Creators, Youtubers, Podcasters, and Ingenious
-            People to Start Creating
-          </p>
+    <div
+      className="w-full mt-20 min-h-[50vh] flex flex-col justify-between bg-black-1 text-white-1"
+      id="contact"
+    >
+      <div className="w-full h-[42vh] p-10 flex flex-col lg:flex-row justify-between items-start ">
+        <div className="">
+          <div>
+            <p className="font-bold text-xl">Contact Us:</p>
+            <p className="mt-1">
+              Contact us if you encounter any issues or have any inquiries.
+            </p>
+            <p className="mt-2 flex justify-start items-center">
+              <Mail size={20} />{" "}
+              <span className="ml-2">dnis.ecotech@gmail.com</span>
+            </p>
+          </div>
+          <div className="mt-10">
+            <p className="font-bold text-xl">Follow us on:</p>
+            <div className="flex mt-2">
+              {soMeIcons.map((icon, index) => (
+                <div
+                  key={(index + 493) * 932058}
+                  className="relative mr-4 hover:-translate-y-1 transition-all ease-linear group/openShow"
+                >
+                  <IconModal label={icon.title} />
+                  <Link href={icon.link}>
+                    <Image
+                      src={icon.icon}
+                      alt={icon.title}
+                      width={22}
+                      height={22}
+                      className=""
+                    />
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-
-        <div className="flex flex-col">
-          <h2 className="font-bold text-xl">Legal</h2>
+        <div className="flex">
           <Link
             href={"/legal"}
-            prefetch={false}
-            className="border-b border-black-1 mt-3"
+            className="font-bold text-xl mr-5 hover:scale-[1.1] transition-all duration-300"
           >
-            Terms of conditions
+            Terms of Use
           </Link>
           <Link
             href={"/legal"}
-            prefetch={false}
-            className="border-b border-black-1 mt-3"
+            className="font-bold text-xl hover:scale-[1.1] transition-all duration-300"
           >
-            Privacy policy
-          </Link>
-        </div>
-        <div className="flex flex-col">
-          <h2 className="font-bold text-xl">Check Out</h2>
-          <Link
-            href={"https://www.atlas-chat.com/"}
-            prefetch={false}
-            className="border-b border-black-1 mt-3"
-          >
-            AtlasChat-AI
-          </Link>
-          <Link
-            href={"https://www.pixelwizard-ai.com/"}
-            prefetch={false}
-            className="border-b border-black-1 mt-3"
-          >
-            PixelWizard-AI
+            Privacy Policy
           </Link>
         </div>
       </div>
-
-      <div className="w-full flex justify-center items-center">
-        <p className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-500">
-          Copyright © 2024 - All rights reserved
+      <div className="w-full min-h-[8vh] flex flex-col my-5 md:my-0 md:flex-row justify-between items-center px-10">
+        <p className="font-bold text-white-1">
+          Copyright © 2024 EcoTech-System - All rights reserved
         </p>
+        <a
+          className="hover:scale-[1.1] transition-all duration-300"
+          href="https://www.ecotech-systems.com/"
+        >
+          www.ecotech-system.com
+        </a>
       </div>
     </div>
   );

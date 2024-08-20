@@ -20,20 +20,30 @@ export const getAllPlans = query({
 export const createPlan = internalMutation({
   args: {
     name: v.string(),
-    icon: v.string(),
     price: v.number(),
     credits: v.number(),
-    characters: v.number(),
     imageGeneration: v.number(),
+    description: v.string(),
+    messageOne: v.string(),
+    messageTwo: v.string(),
+    messageThree: v.string(),
+    messageFour: v.string(),
+    messageFive: v.string(),
+    messageSix: v.string(),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert("plans", {
       name: args.name,
-      icon: args.icon,
       price: args.price,
       credits: args.credits,
-      characters: args.characters,
       imageGeneration: args.imageGeneration,
+      description: args.description,
+      messageOne: args.messageOne,
+      messageTwo: args.messageTwo,
+      messageThree: args.messageThree,
+      messageFour: args.messageFour,
+      messageFive: args.messageFive,
+      messageSix: args.messageSix,
     });
   },
 });

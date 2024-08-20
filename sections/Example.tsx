@@ -1,7 +1,6 @@
 "use client";
 
 import { useAudio } from "@/app/providers/AudioProvider";
-import TtsCard from "@/components/TtsCard";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React from "react";
@@ -20,16 +19,17 @@ const Example = () => {
   };
 
   return (
-    <section className="w-full min-h-[70vh] mt-40 flex flex-col items-center justify-start py-10">
-      <p className="uppercase text-4xl font-bold text-center">
-        Empowering Contect Creators, Youtubers, Podcasters, and{" "}
+    <section className="w-full min-h-[30vh] flex flex-col items-center justify-start pt-10">
+      <p className="text-5xl font-extrabold text-center">
+        Generate your audio file with
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-500">
-          Ingenious People to Start
+          {" "}
+          just one click.
         </span>{" "}
-        Creating
+        Download and share your audio instantly.
       </p>
 
-      <div className="w-full mt-40 flex flex-col xl:flex-row xl:items-start justify-between items-center">
+      <div className="w-full md:max-w-[900px] my-28 flex flex-col items-center justify-between lg:flex-row lg:items-start">
         <figure className="flex flex-col gap-2">
           <Image
             src={"/images/cardImg.png"}
@@ -48,15 +48,15 @@ const Example = () => {
           </div>
         </figure>
 
-        <div className="max-w-[600px] mx-5 my-10 xl:my-0 text-lg">
-          <p>
-            This is just an example. You can create a motivational speech that
-            you can download and upload it to Youtube, Spotify or any other
-            platforms and monetize it!
+        <div className="max-w-[600px] mx-5 xl:my-0 flex flex-col lg:items-start items-center justify-center">
+          <p className="mt-5 text-center lg:text-start lg:mt-0">
+            Create professional-sounding audio for presentations, tutorials, or
+            customer interactions. Generate voiceovers for videos, podcasts, and
+            social media content quickly and efficiently.
           </p>
           <Button
             onClick={handlePlay}
-            className="text-16 mt-8 w-full max-w-[250px] bg-purple-600 font-extrabold text-white-1 hover:shadow-[rgba(147,_51,_234,_0.3)_0px_9px_20px] transition-all duration-300"
+            className="text-sm mt-5 w-full lg:max-w-[180px] bg-[#3841e6] font-bold text-white-1 hover:shadow-[rgba(56,_65,_230,_0.3)_0px_9px_20px] transition-all duration-300"
           >
             <Image
               src="/icons/Play.svg"

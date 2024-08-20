@@ -12,7 +12,7 @@ export const sidebarLinks = [
   {
     imgURL: "/icons/soundStory.svg",
     route: "/create-tts",
-    label: "Create Sound Story",
+    label: "Text-to-Speech",
   },
   {
     imgURL: "/icons/plans.svg",

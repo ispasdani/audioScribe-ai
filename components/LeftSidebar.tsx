@@ -31,7 +31,7 @@ const LeftSidebar = () => {
       // })}
       className="left_sidebar"
     >
-      <nav className="flex flex-col gap-6">
+      <nav className="flex flex-col justify-center items-center">
         <Link
           href={"/"}
           className="flex cursor-pointer items-center gap-1 pb-10 justify-center"
@@ -44,7 +44,7 @@ const LeftSidebar = () => {
             className="mr-2"
           />
           <h1 className="text-24 font-extrabold text-white mag-lg:hidden">
-            AudioScribe AI
+            Audiofy-AI
           </h1>
         </Link>
 
@@ -60,8 +60,8 @@ const LeftSidebar = () => {
               prefetch={false}
               key={link.label}
               className={cn(
-                "flex ga-3 items-center py-4 px-4 justify-center lg:justify-start",
-                { "bg-nav-focus border-r-4 border-blue-800": isActive }
+                "flex items-start w-full py-4 px-4 justify-start lg:justify-start",
+                { "bg-white-1": isActive }
               )}
             >
               <Image
@@ -69,8 +69,9 @@ const LeftSidebar = () => {
                 alt={link.label}
                 width={24}
                 height={24}
-                className="mr-2"
+                className="mr-2 stroke-black-1"
               />
+
               <p>{link.label}</p>
             </Link>
           );

@@ -5,6 +5,8 @@ import Image from "next/image";
 import { Toaster } from "@/components/ui/toaster";
 import AudioPlayer from "@/components/AudioPlayer";
 import Footer from "@/components/Footer";
+import Nav from "@/components/Nav";
+import CreditsBanner from "@/components/CreditsBanner";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,29 +20,16 @@ export default function RootLayout({
 }>) {
   return (
     <div className="flex flex-col h-auto">
-      <main className="relative flex dark:bg-black-1 bg-white-1 dark:bg-dot-white/[1] bg-dot-black-1/[0.2]">
-        <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black-1 bg-white-1 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
-
-        <LeftSidebar />
-
-        <section className="flex min-h-screen flex-1 flex-col px-4 sm:px-14">
-          <div className="mx-auto flex w-full max-w-5xl flex-col max-sm:px-4">
-            <div className="flex h-16 items-center justify-between md:hidden">
-              <Image
-                src="/icons/logo.svg"
-                width={30}
-                height={30}
-                alt="menu icon"
-              />
-              <MobileNav />
-            </div>
-            <div className="flex flex-col md:pb-14">
-              <Toaster />
-
-              {children}
-            </div>
+      <main className="relative flex ">
+        <section className="flex min-h-screen flex-1 flex-col bg-white-1">
+          <div className="block md:hidden">
+            <MobileNav />
           </div>
+          <Nav />
+          <CreditsBanner />
+          <Toaster />
 
+          {children}
           <Footer />
         </section>
       </main>

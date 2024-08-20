@@ -21,7 +21,7 @@ const GenerateThumbnail = ({
   setImagePrompt,
   userId,
 }: GenerateThumbnailProps) => {
-  const [isAiThumbnail, setIsAiThumbnail] = useState(false);
+  const [isAiThumbnail, setIsAiThumbnail] = useState(true);
   const [isImageLoading, setIsImageLoading] = useState(false);
   const imageRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -95,35 +95,34 @@ const GenerateThumbnail = ({
     }
   };
 
+  const downloadImage = () => {
+    const link = document.createElement("a");
+    link.href = image!;
+    link.download = "thumbnail.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
-    <div className="shadow-[0_8px_30px_rgb(0,0,0,0.12)] bg-white-1 border-dashed border-2 border-gray-200 rounded-lg px-3 py-6 mt-10">
-      <div className="generate_thumbnail">
+    <div className="w-full shadow-md bg-white-1 border border-gray-200 rounded-lg p-4 mt-10">
+      <div className="">
         <Button
           type="button"
           variant="plain"
           onClick={() => setIsAiThumbnail(true)}
           className={cn("text-black-1", {
-            "bg-purple-600 text-white-1": isAiThumbnail,
+            "bg-[#3841e6] text-white-1": isAiThumbnail,
           })}
         >
           Use AI to generate thumbnail
         </Button>
-        <Button
-          type="button"
-          variant="plain"
-          onClick={() => setIsAiThumbnail(false)}
-          className={cn("text-black-1", {
-            "bg-purple-600 text-white-1": !isAiThumbnail,
-          })}
-        >
-          Upload custom image
-        </Button>
       </div>
       {isAiThumbnail ? (
         <div className="flex flex-col gap-5">
-          <div className="mt-5 flex flex-col gap-2.5">
+          <div className="mt-3 flex flex-col gap-2.5">
             <Label className="text-16 font-bold text-black-1 mt-3">
-              AI Prompt to generate cover
+              Prompt to generate cover
             </Label>
             <Textarea
               className="input-class font-light focus-visible:ring-offset-purple-600"
@@ -133,10 +132,10 @@ const GenerateThumbnail = ({
               onChange={(e) => setImagePrompt(e.target.value)}
             />
           </div>
-          <div className="w-full max-w-[300px] flex justify-start items-center">
+          <div className="w-full flex justify-start items-center">
             <Button
               type="button"
-              className="text-16 bg-purple-600 duration-500 hover:shadow-[0_10px_20px_rgba(147,_51,_234,_0.7)] py-4 font-bold text-white-1 transition-all"
+              className="w-full text-16 bg-[#3841e6] duration-500 hover:shadow-[0_10px_20px_rgba(56,_65,_230,_0.7)] py-4 font-bold text-white-1 transition-all"
               onClick={generateImage}
             >
               {isImageLoading ? (
@@ -152,10 +151,19 @@ const GenerateThumbnail = ({
               <Loader className="ml-3 animate-spin text-purple-600" />
             )}
           </div>
+          {image && (
+            <Button
+              type="button"
+              className="mt-4 w-full py-2 px-4 rounded-lg bg-green-600 hover:bg-green-700 text-white-1 transition-colors"
+              onClick={downloadImage}
+            >
+              Download Image
+            </Button>
+          )}
         </div>
       ) : (
         <div className="image_div" onClick={() => imageRef?.current?.click()}>
-          <Input
+          {/* <Input
             type="file"
             className="hidden"
             ref={imageRef}
@@ -181,7 +189,7 @@ const GenerateThumbnail = ({
             <p className="text-12 font-normal text-gray-1">
               SVG, PNG, JPG, or GIF (max. 1080x1080px)
             </p>
-          </div>
+          </div> */}
         </div>
       )}
       {image && (
@@ -190,7 +198,7 @@ const GenerateThumbnail = ({
             src={image}
             width={200}
             height={200}
-            className="mt-5"
+            className="mt-5 rounded-md"
             alt="thumbnail"
           />
         </div>
